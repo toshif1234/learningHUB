@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-dark-950 text-dark-100 font-sans antialiased;
+  }
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-dark-900;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-dark-600 rounded-full hover:bg-dark-500;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-dark-800/50 backdrop-blur-xl border border-dark-700/50 rounded-2xl;
+  }
+  .glass-card-hover {
+    @apply glass-card hover:bg-dark-800/70 hover:border-dark-600/50 transition-all duration-300;
+  }
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-500 hover:to-primary-400 text-white font-semibold py-2.5 px-6 rounded-xl transition-all duration-300 shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100;
+  }
+  .btn-secondary {
+    @apply bg-dark-700 hover:bg-dark-600 text-dark-200 font-medium py-2.5 px-6 rounded-xl transition-all duration-300 border border-dark-600 hover:border-dark-500;
+  }
+  .btn-danger {
+    @apply bg-gradient-to-r from-rose-600 to-rose-500 hover:from-rose-500 hover:to-rose-400 text-white font-semibold py-2.5 px-6 rounded-xl transition-all duration-300 shadow-lg shadow-rose-500/25;
+  }
+  .input-field {
+    @apply w-full bg-dark-800/80 border border-dark-600 rounded-xl px-4 py-3 text-dark-100 placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all duration-300;
+  }
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border border-transparent;
+  }
+  .badge-primary {
+    @apply badge bg-primary-50 text-primary-700 border-primary-100;
+  }
+  .badge-success {
+    @apply badge bg-emerald-50 text-emerald-700 border-emerald-100;
+  }
+  .badge-warning {
+    @apply badge bg-amber-50 text-amber-700 border-amber-100;
+  }
+  .badge-danger {
+    @apply badge bg-rose-50 text-rose-700 border-rose-100;
+  }
+  .sidebar-link {
+    @apply flex items-center gap-3 px-4 py-2.5 rounded-xl text-dark-400 hover:text-dark-100 hover:bg-dark-800 transition-all duration-200;
+  }
+  .sidebar-link.active {
+    @apply text-primary-600 bg-primary-50 border-r-2 border-primary-500 font-semibold;
+  }
+}
+
+/* Light Theme overrides for explicit text-white classes */
+.text-white:not(.btn-primary):not(.btn-secondary):not(.btn-danger):not(.btn-success):not(.badge):not(.badge-success):not(.badge-primary):not(.badge-warning):not(.badge-danger):not(button):not(.bg-primary-600):not(.bg-gradient-to-r):not(.bg-gradient-to-br) {
+  color: #0b52f7 !important;
+}
+
+/* Ensure placeholder contrast */
+.placeholder-dark-400::placeholder {
+  color: #94a3b8 !important;
+}
