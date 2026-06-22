@@ -11,17 +11,17 @@ SECRET_KEY = os.getenv("SECRET_KEY", "a-very-long-secret-key-32-chars-long-at-le
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "15"))
 REFRESH_TOKEN_EXPIRE_DAYS = int(os.getenv("REFRESH_TOKEN_EXPIRE_DAYS", "7"))
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///./learning_portal.db")
-UPLOAD_DIR = Path(os.getenv("UPLOAD_DIR", str(BASE_DIR / "uploads")))
+UPLOAD_DIR = Path(os.getenv("UPLOAD_DIR", "./uploads"))
 
 # SMTP Configuration
 SMTP_HOST = os.getenv("SMTP_HOST", "smtp.gmail.com")
 SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
-SMTP_USERNAME = os.getenv("SMTP_USERNAME", "")
-SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")
+SMTP_USERNAME = os.getenv("SMTP_USERNAME", "toshifpatil401@gmail.com")
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "jlbp isft vcvz cvwt")
 EMAIL_FROM = os.getenv("EMAIL_FROM", "noreply@yourcompany.com")
 EMAIL_FROM_NAME = os.getenv("EMAIL_FROM_NAME", "Learning Portal")
 
-FRONTEND_ORIGIN = os.getenv("FRONTEND_ORIGIN", "http://localhost:5173")
+FRONTEND_ORIGIN = os.getenv("FRONTEND_ORIGIN", "http://10.18.138.234:5173/")
 
 # Feature Flags
 MAX_FILE_SIZE_MB = int(os.getenv("MAX_FILE_SIZE_MB", "500"))

@@ -5,12 +5,13 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from backend.config import (
     SMTP_HOST, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD,
-    EMAIL_FROM, EMAIL_FROM_NAME, FRONTEND_ORIGIN
+    EMAIL_FROM, EMAIL_FROM_NAME
 )
 
 def send_smtp_email(to_email: str, subject: str, html_content: str):
     """Synchronous sender helper to be run in a thread pool"""
     # If SMTP username is not configured, fall back to console print
+    print(f"test: {SMTP_USERNAME}")
     if not SMTP_USERNAME:
         print(f"\n==================================================")
         print(f"📧 [CONSOLE EMAIL FALLBACK]")
@@ -101,7 +102,7 @@ async def send_welcome_email(to_email: str, name: str):
     <h2>Welcome to the Team, {name}!</h2>
     <p>Your account on the Internal Learning Portal has been verified and activated.</p>
     <p>You can now browse the course catalog, enroll in open-access training modules, and take assessments.</p>
-    <a href="{FRONTEND_ORIGIN}" class="button">Access Learning Portal</a>
+    <a href="http://10.18.138.234:5173/" class="button">Access Learning Portal</a>
     """
     await send_email(to_email, "Welcome to the Internal Learning Portal!", get_base_template(content))
 
@@ -113,7 +114,7 @@ async def send_course_assigned_email(to_email: str, name: str, course_title: str
     <p>You have been assigned a new course: <strong>{course_title}</strong>.</p>
     <p>Please complete this course and its assessment before the deadline:</p>
     <p style="font-size: 18px; font-weight: bold; color: #475569;">⏰ {formatted_deadline}</p>
-    <a href="{FRONTEND_ORIGIN}" class="button">Go to Course Dashboard</a>
+    <a href="http://10.18.138.234:5173/" class="button">Go to Course Dashboard</a>
     """
     await send_email(to_email, f"Action Required: Course Assigned - {course_title}", get_base_template(content))
 
@@ -127,7 +128,7 @@ async def send_deadline_reminder_email(to_email: str, name: str, course_title: s
     <p>This is a reminder that the course <strong>{course_title}</strong> is due in {days_left} day{'s' if days_left > 1 else ''}.</p>
     <p>Please log in and complete the required modules and test before the deadline:</p>
     <p style="font-size: 18px; font-weight: bold; color: {color};">⏰ Deadline: {formatted_deadline}</p>
-    <a href="{FRONTEND_ORIGIN}" class="button">Resume Learning</a>
+    <a href="http://10.18.138.234:5173/" class="button">Resume Learning</a>
     """
     await send_email(to_email, f"{urgency}: {course_title}", get_base_template(content))
 
@@ -152,7 +153,7 @@ async def send_assessment_result_email(to_email: str, name: str, course_title: s
         Score: <span style="font-size: 24px;">{score:.1f}%</span>
     </div>
     {retry_message}
-    <a href="{FRONTEND_ORIGIN}" class="button">View Dashboard</a>
+    <a href="http://10.18.138.234:5173/" class="button">View Dashboard</a>
     """
     await send_email(to_email, f"Assessment Result - {course_title}", get_base_template(content))
 
@@ -162,6 +163,6 @@ async def send_course_completed_email(to_email: str, name: str, course_title: st
     <p>Hello {name},</p>
     <p>You have successfully completed all modules and passed the assessment for <strong>{course_title}</strong>.</p>
     <p>Thank you for completing this requirement. Keep up the great work!</p>
-    <a href="{FRONTEND_ORIGIN}" class="button">View My Certificate</a>
+    <a href="http://10.18.138.234:5173/" class="button">View My Certificate</a>
     """
     await send_email(to_email, f"Course Completed! Congratulations - {course_title}", get_base_template(content))
