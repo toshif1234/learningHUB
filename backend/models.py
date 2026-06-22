@@ -23,6 +23,7 @@ class User(Base):
     attempts = relationship("AssessmentAttempt", back_populates="user", cascade="all, delete-orphan")
     notifications = relationship("Notification", back_populates="user", cascade="all, delete-orphan")
     module_progresses = relationship("ModuleProgress", back_populates="user", cascade="all, delete-orphan")
+    assessment_overrides = relationship("AssessmentUserOverride", back_populates="user", cascade="all, delete-orphan")
 
 class OtpRecord(Base):
     __tablename__ = "otp_records"
@@ -128,7 +129,7 @@ class Assessment(Base):
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     pass_percentage: Mapped[int] = mapped_column(Integer, default=70)
     time_limit_minutes: Mapped[int | None] = mapped_column(Integer, nullable=True)
-    max_attempts: Mapped[int] = mapped_column(Integer, default=3)
+    max_attempts: Mapped[int] = mapped_column(Integer, default=2)
     shuffle_questions: Mapped[bool] = mapped_column(Boolean, default=False)
     shuffle_options: Mapped[bool] = mapped_column(Boolean, default=False)
     show_correct_answers: Mapped[str] = mapped_column(String(50), default="never") # 'never', 'after_passing', 'after_attempts_used'
@@ -138,6 +139,7 @@ class Assessment(Base):
     course = relationship("Course", back_populates="assessments")
     questions = relationship("Question", back_populates="assessment", cascade="all, delete-orphan", order_by="Question.order_index")
     attempts = relationship("AssessmentAttempt", back_populates="assessment", cascade="all, delete-orphan")
+    overrides = relationship("AssessmentUserOverride", back_populates="assessment", cascade="all, delete-orphan")
 
 class Question(Base):
     __tablename__ = "questions"
@@ -203,3 +205,14 @@ class Notification(Base):
     created_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=datetime.datetime.utcnow)
 
     user = relationship("User", back_populates="notifications")
+
+class AssessmentUserOverride(Base):
+    __tablename__ = "assessment_user_overrides"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    assessment_id: Mapped[int] = mapped_column(Integer, ForeignKey("assessments.id", ondelete="CASCADE"), index=True)
+    max_attempts: Mapped[int] = mapped_column(Integer, default=2)
+
+    user = relationship("User", back_populates="assessment_overrides")
+    assessment = relationship("Assessment", back_populates="overrides")

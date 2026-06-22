@@ -9,7 +9,8 @@ from fastapi.responses import HTMLResponse
 from backend.database import get_db
 from backend.models import (
     Assessment, Question, Option, AssessmentAttempt, UserAnswer,
-    Course, CourseModule, ModuleProgress, User, Assignment, Enrollment, Notification
+    Course, CourseModule, ModuleProgress, User, Assignment, Enrollment, Notification,
+    AssessmentUserOverride
 )
 from backend.schemas import (
     AssessmentResponse, AssessmentCreate, AssessmentUpdate,
@@ -206,10 +207,19 @@ async def start_assessment(
     attempts_res = await db.execute(attempts_query)
     attempt_count = attempts_res.scalar() or 0
 
-    if attempt_count >= assessment.max_attempts:
+    # Fetch custom override
+    override_query = select(AssessmentUserOverride).where(
+        AssessmentUserOverride.assessment_id == id,
+        AssessmentUserOverride.user_id == current_user.id
+    )
+    override_res = await db.execute(override_query)
+    override = override_res.scalars().first()
+    allowed_max = override.max_attempts if override else assessment.max_attempts
+
+    if attempt_count >= allowed_max:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"You have reached the maximum number of attempts ({assessment.max_attempts}) for this assessment."
+            detail=f"You have reached the maximum number of attempts ({allowed_max}) for this assessment."
         )
 
     # 4. Create attempt record
@@ -411,7 +421,14 @@ async def submit_assessment(
         db.add(notif)
 
     # 6. Send results email
-    attempts_left = assessment.max_attempts - attempt.attempt_number
+    override_query = select(AssessmentUserOverride).where(
+        AssessmentUserOverride.assessment_id == assessment.id,
+        AssessmentUserOverride.user_id == current_user.id
+    )
+    override_res = await db.execute(override_query)
+    override = override_res.scalars().first()
+    allowed_max = override.max_attempts if override else assessment.max_attempts
+    attempts_left = allowed_max - attempt.attempt_number
     course_query = select(Course).where(Course.id == assessment.course_id)
     course_res = await db.execute(course_query)
     course = course_res.scalars().first()
@@ -476,8 +493,16 @@ async def get_attempt_detail(
         
         if assessment.show_correct_answers == "after_passing" and attempt.is_passed:
             show_correct = True
-        elif assessment.show_correct_answers == "after_attempts_used" and total_attempts >= assessment.max_attempts:
-            show_correct = True
+        elif assessment.show_correct_answers == "after_attempts_used":
+            override_query = select(AssessmentUserOverride).where(
+                AssessmentUserOverride.assessment_id == assessment_id,
+                AssessmentUserOverride.user_id == current_user.id
+            )
+            override_res = await db.execute(override_query)
+            override = override_res.scalars().first()
+            allowed_max = override.max_attempts if override else assessment.max_attempts
+            if total_attempts >= allowed_max:
+                show_correct = True
 
     # Get user answers
     ans_query = select(UserAnswer).where(UserAnswer.attempt_id == attempt_id)

@@ -129,7 +129,7 @@ class AssessmentBase(BaseModel):
     description: Optional[str] = None
     pass_percentage: int = 70
     time_limit_minutes: Optional[int] = None
-    max_attempts: int = 3
+    max_attempts: int = 2
     shuffle_questions: bool = False
     shuffle_options: bool = False
     show_correct_answers: str = "never" # 'never', 'after_passing', 'after_attempts_used'
@@ -382,3 +382,18 @@ class UserAnalytics(BaseModel):
     assigned_courses_count: int
     completed_courses_count: int
     overall_progress: float
+
+class ExhaustedAttemptResponse(BaseModel):
+    user_id: int
+    user_name: str
+    user_email: str
+    course_id: int
+    course_title: str
+    assessment_id: int
+    assessment_title: str
+    attempts_count: int
+    max_attempts: int
+
+class IncreaseAttemptsRequest(BaseModel):
+    user_id: int
+    assessment_id: int

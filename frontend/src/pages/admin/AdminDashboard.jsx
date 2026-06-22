@@ -31,19 +31,22 @@ export default function AdminDashboard() {
   const [overview, setOverview] = useState(null);
   const [courseAnalytics, setCourseAnalytics] = useState([]);
   const [userAnalytics, setUserAnalytics] = useState([]);
+  const [exhaustedAttempts, setExhaustedAttempts] = useState([]);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
         setLoading(true);
-        const [overviewRes, coursesRes, usersRes] = await Promise.all([
+        const [overviewRes, coursesRes, usersRes, exhaustedRes] = await Promise.all([
           apiAnalytics.overview(),
           apiAnalytics.courses(),
-          apiAnalytics.users()
+          apiAnalytics.users(),
+          apiAnalytics.getExhaustedAttempts()
         ]);
         setOverview(overviewRes.data);
         setCourseAnalytics(coursesRes.data || []);
         setUserAnalytics(usersRes.data || []);
+        setExhaustedAttempts(exhaustedRes.data || []);
       } catch (err) {
         toast.error('Failed to load dashboard statistics');
       } finally {
@@ -53,6 +56,23 @@ export default function AdminDashboard() {
 
     fetchDashboardData();
   }, []);
+
+  const handleIncreaseAttempts = async (userId, assessmentId) => {
+    try {
+      toast.loading('Increasing attempts...', { id: 'attempts-increase' });
+      await apiAnalytics.increaseAttempts({ user_id: userId, assessment_id: assessmentId });
+      toast.success('Attempts limit increased successfully', { id: 'attempts-increase' });
+      
+      const [usersRes, exhaustedRes] = await Promise.all([
+        apiAnalytics.users(),
+        apiAnalytics.getExhaustedAttempts()
+      ]);
+      setUserAnalytics(usersRes.data || []);
+      setExhaustedAttempts(exhaustedRes.data || []);
+    } catch (err) {
+      toast.error(err.response?.data?.detail || 'Failed to increase attempts limit', { id: 'attempts-increase' });
+    }
+  };
 
   const handleExportCSV = async () => {
     try {
@@ -263,6 +283,37 @@ export default function AdminDashboard() {
           <CheckCircle2 className="w-5 h-5 text-emerald-400" />
           Associate Progress Highlights
         </h4>
+
+        {/* Exhausted Attempts Alerts */}
+        {exhaustedAttempts.length > 0 && (
+          <div className="bg-rose-500/10 border border-rose-500/20 rounded-2xl p-4 mb-6 space-y-3">
+            <h5 className="text-sm font-bold text-rose-400 flex items-center gap-2">
+              <AlertCircle className="w-4 h-4" />
+              Action Required: Assessment Attempts Exhausted
+            </h5>
+            <div className="divide-y divide-rose-500/10 text-xs">
+              {exhaustedAttempts.map((item, idx) => (
+                <div key={idx} className="py-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div>
+                    <p className="font-semibold text-white">
+                      {item.user_name} ({item.user_email})
+                    </p>
+                    <p className="text-dark-400 mt-0.5">
+                      Failed final assessment for <span className="text-primary-400 font-medium">{item.course_title}</span> ({item.attempts_count}/{item.max_attempts} attempts used)
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => handleIncreaseAttempts(item.user_id, item.assessment_id)}
+                    className="py-1.5 px-3.5 text-xs bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-lg transition-colors duration-200"
+                  >
+                    Increase Attempts
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="overflow-x-auto">
           {userAnalytics.length > 0 ? (
             <table className="w-full text-left text-sm">
