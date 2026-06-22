@@ -4,7 +4,7 @@ import Sidebar from './Sidebar';
 
 export default function Layout() {
   return (
-    <div id="app-layout" className="min-h-screen bg-dark-950 text-dark-100 flex flex-col antialiased">
+    <div id="app-layout" className="min-h-screen premium-mesh-bg text-dark-100 flex flex-col antialiased">
       <Navbar />
       <div className="flex flex-1 pt-16">
         <Sidebar />

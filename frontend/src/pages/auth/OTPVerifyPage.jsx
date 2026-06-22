@@ -105,7 +105,7 @@ export default function OTPVerifyPage() {
   };
 
   return (
-    <div id="otp-page-container" className="min-h-screen bg-dark-950 flex items-center justify-center p-4 relative overflow-hidden">
+    <div id="otp-page-container" className="min-h-screen premium-mesh-bg flex items-center justify-center p-4 relative overflow-hidden">
       {/* Decorative background blobs */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-600/10 rounded-full blur-3xl -z-10 animate-pulse-slow"></div>
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary-50/10 rounded-full blur-3xl -z-10 animate-pulse-slow"></div>
