@@ -203,13 +203,13 @@ export default function CourseViewerPage() {
                 <div className="flex-1 flex items-center justify-center w-full h-full min-h-[500px]">
                   {/\.(jpg|jpeg|png|gif|webp|svg)$/i.test(activeModule.file_path) ? (
                     <img
-                      src={`http://localhost:8000${activeModule.file_path}`}
+                      src={`http://10.18.138.234:8000${activeModule.file_path}`}
                       alt={activeModule.title}
                       className="max-w-full max-h-[600px] rounded-xl object-contain border border-dark-800"
                     />
                   ) : (
                     <iframe
-                      src={`http://localhost:8000${activeModule.file_path}`}
+                      src={`http://10.18.138.234:8000${activeModule.file_path}`}
                       title={activeModule.title}
                       className="w-full h-full min-h-[500px] rounded-xl border border-dark-800"
                     />

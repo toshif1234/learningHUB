@@ -22,6 +22,7 @@ EMAIL_FROM = os.getenv("EMAIL_FROM", "noreply@yourcompany.com")
 EMAIL_FROM_NAME = os.getenv("EMAIL_FROM_NAME", "Learning Portal")
 
 FRONTEND_ORIGIN = os.getenv("FRONTEND_ORIGIN", "http://10.18.138.234:5173/")
+BACKEND_ORIGIN = os.getenv("BACKEND_ORIGIN", "http://10.18.138.234:8000/")
 
 # Feature Flags
 MAX_FILE_SIZE_MB = int(os.getenv("MAX_FILE_SIZE_MB", "500"))

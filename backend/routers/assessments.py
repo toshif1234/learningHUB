@@ -22,7 +22,7 @@ from backend.auth.email_service import send_assessment_result_email
 
 import hmac
 import hashlib
-from backend.config import SECRET_KEY
+from backend.config import SECRET_KEY, FRONTEND_ORIGIN
 
 router = APIRouter(prefix="/assessments", tags=["assessments"])
 
@@ -444,7 +444,7 @@ async def submit_assessment(
     await db.commit()
 
     sig = get_certificate_signature(attempt_id) if is_passed else None
-    url = f"http://10.18.138.234:8000/assessments/attempts/{attempt_id}/certificate?signature={sig}" if is_passed else None
+    url = f"{FRONTEND_ORIGIN}/assessments/attempts/{attempt_id}/certificate?signature={sig}" if is_passed else None
 
     return AttemptSubmitResponse(
         attempt_id=attempt_id,
@@ -540,7 +540,7 @@ async def get_attempt_detail(
         )
 
     sig = get_certificate_signature(attempt.id) if attempt.is_passed else None
-    url = f"http://10.18.138.234:8000/assessments/attempts/{attempt.id}/certificate?signature={sig}" if attempt.is_passed else None
+    url = f"{FRONTEND_ORIGIN}/assessments/attempts/{attempt.id}/certificate?signature={sig}" if attempt.is_passed else None
 
     return AttemptDetailResponse(
         id=attempt.id,
@@ -956,5 +956,5 @@ async def get_passed_attempt(
     return {
         "attempt_id": attempt.id,
         "signature": sig,
-        "certificate_url": f"http://10.18.138.234:8000/assessments/attempts/{attempt.id}/certificate?signature={sig}"
+        "certificate_url": f"{FRONTEND_ORIGIN}/assessments/attempts/{attempt.id}/certificate?signature={sig}"
     }

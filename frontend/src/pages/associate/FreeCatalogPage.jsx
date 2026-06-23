@@ -130,7 +130,7 @@ export default function FreeCatalogPage() {
                 <div className="h-44 bg-gradient-to-tr from-primary-900/60 to-dark-900 relative flex items-center justify-center border-b border-dark-800/60">
                   {course.thumbnail_url ? (
                     <img
-                      src={`http://localhost:8000${course.thumbnail_url}`}
+                      src={`http://10.18.138.234:8000${course.thumbnail_url}`}
                       alt={course.title}
                       className="w-full h-full object-cover"
                     />

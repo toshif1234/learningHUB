@@ -32,7 +32,7 @@ export default function CourseCard({ course, enrollment, assignment, onClick, ac
       <div className="relative h-40 overflow-hidden">
         {course?.thumbnail_url ? (
           <img
-            src={`http://localhost:8000${course.thumbnail_url}`}
+            src={`http://10.18.138.234:8000${course.thumbnail_url}`}
             alt={course.title}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />

@@ -93,7 +93,7 @@ export default function CourseBuilder() {
             external_url: c.external_url || ''
           });
           if (c.thumbnail_url) {
-            setThumbnailPreview(`http://localhost:8000${c.thumbnail_url}`);
+            setThumbnailPreview(`http://10.18.138.234:8000${c.thumbnail_url}`);
           }
           setModules(c.modules || []);
 
@@ -158,7 +158,7 @@ export default function CourseBuilder() {
         const formData = new FormData();
         formData.append('file', thumbnailFile);
         const thumbRes = await coursesAPI.uploadThumbnail(courseId, formData);
-        setThumbnailPreview(`http://localhost:8000${thumbRes.data.thumbnail_url}`);
+        setThumbnailPreview(`http://10.18.138.234:8000${thumbRes.data.thumbnail_url}`);
         setThumbnailFile(null);
         toast.success('Thumbnail uploaded!');
       }
