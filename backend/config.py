@@ -14,11 +14,11 @@ DATABASE_URL = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///./learning_portal.
 UPLOAD_DIR = Path(os.getenv("UPLOAD_DIR", "./uploads"))
 
 # SMTP Configuration
-SMTP_HOST = os.getenv("SMTP_HOST", "smtp.gmail.com")
+SMTP_HOST = os.getenv("SMTP_HOST", "smtp.office365.com")
 SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
-SMTP_USERNAME = os.getenv("SMTP_USERNAME", "toshifpatil401@gmail.com")
-SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "jlbp isft vcvz cvwt")
-EMAIL_FROM = os.getenv("EMAIL_FROM", "noreply@yourcompany.com")
+SMTP_USERNAME = os.getenv("SMTP_USERNAME", "admin@koerber-stellium.com")
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "Welcome@6767")
+EMAIL_FROM = os.getenv("EMAIL_FROM", "admin@koerber-stellium.com")
 EMAIL_FROM_NAME = os.getenv("EMAIL_FROM_NAME", "Learning Portal")
 
 FRONTEND_ORIGIN = os.getenv("FRONTEND_ORIGIN", "http://10.18.138.234:5173/")
