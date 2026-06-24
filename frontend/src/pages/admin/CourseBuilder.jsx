@@ -416,13 +416,12 @@ export default function CourseBuilder() {
           return (
             <div key={s.num} className="flex items-center gap-2">
               <div
-                className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm border transition-all duration-300 ${
-                  step === s.num
+                className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm border transition-all duration-300 ${step === s.num
                     ? 'bg-primary-600/20 border-primary-500 text-primary-400 shadow-md shadow-primary-500/10 scale-105'
                     : step > s.num
                       ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-400'
                       : 'bg-dark-900 border-dark-750 text-dark-500'
-                }`}
+                  }`}
               >
                 <Icon className="w-4.5 h-4.5" />
               </div>
@@ -612,11 +611,10 @@ export default function CourseBuilder() {
                       key={mt.type}
                       type="button"
                       onClick={() => setNewModule({ ...newModule, content_type: mt.type })}
-                      className={`flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-semibold transition-all ${
-                        newModule.content_type === mt.type
+                      className={`flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-semibold transition-all ${newModule.content_type === mt.type
                           ? 'bg-primary-600/20 text-primary-400 border border-primary-500/30'
                           : 'text-dark-400 hover:text-dark-200'
-                      }`}
+                        }`}
                     >
                       <Icon className="w-4 h-4" />
                       {mt.label}
@@ -658,7 +656,7 @@ export default function CourseBuilder() {
                   <input
                     id="builder-module-file-input"
                     type="file"
-                    accept=".pdf,application/pdf"
+                    accept="application/pdf,image/*"
                     onChange={(e) => setModuleFile(e.target.files[0])}
                     className="input-field text-sm"
                   />
